@@ -1,0 +1,80 @@
+   :root {
+   /*colors*/
+    --dt-primary-color: #8c52ff;
+    --dt-secondary-color: #848ADB; 
+    --dt-highlight-color: #FBBDE9;
+    --dt-dark-color: #090512;
+    --dt-light-color: #d9d9d9;
+    --dt-background-color: #bb9ff3;
+
+    /*nav bar colors*/
+    --dt-nav-bg-color: rgba(33, 5, 53, 70);
+    --dt-nav-toggler-color: var(--dt-highlight-color);
+    --dt-nav-toggler-glow: rgb(214, 8, 163);
+
+    /*form colors*/
+    --dt-formfocus-border-color: var(--dt-secondary-color);
+    --dt-formfocus-shadow: var(--dt-primary-color);
+    --dt-form-background-color: var(--dt-background-color);
+}
+
+
+	.checklist {
+		list-style-type: none;
+	}
+
+	.checklist>li i {
+		color: var(--dt-secondary-color);
+		padding-right: .5rem;
+	}
+
+	.devIcons {
+		font-size: 4rem;
+		padding-left: .5rem;
+	}
+
+	.appLogo {
+		max-width: 400px;
+	}
+
+	/*Sticky Footer*/
+
+	html,
+	body {
+		height:100%;
+	}
+
+	body {
+ 	   display: flex;
+ 	   flex-direction: column;
+	}
+
+	main {
+	    flex-grow: 1;
+	}
+
+	footer {
+ 	   flex-shrink: 0;
+	}
+
+	/*END Sticky footer*/
+
+	#mainNav {
+		background: var(--dt-nav-bg-color);
+	}
+
+	footer {
+		background: var(--dt-nav-bg-color);
+		color: var(--dt-light-color);
+	}
+
+	footer .bi {
+		color: var(--dt-secondary-color);
+		font-size: 1.5rem;
+		padding-left: .5rem;
+		transition: .25s;
+	}
+
+	footer .bi:hover {
+		color: var(--dt-highlight-color);
+	}
