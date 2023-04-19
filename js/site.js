@@ -126,6 +126,8 @@ function displayEventData(currentEvents) {
       parseInt(event.attendance).toLocaleString();
     tableRow.querySelector('[data-id="date"]').textContent = new Date(event.date).toLocaleDateString();
 
+    tableRow.querySelector('tr').setAttribute('data-event', event.id);    
+
     eventTable.appendChild(tableRow);
   }
 }
@@ -183,10 +185,22 @@ function getEventData() {
   let data = localStorage.getItem('dctSuperEvents');
 
   if (data == null) {
-    localStorage.setItem('dctSuperEvents', JSON.stringify(events));
+    let identifiedEvents = events.map((event) => {
+      event.id = generateId();
+      return event;
+    });
+
+    localStorage.setItem('dctSuperEvents', JSON.stringify(identifiedEvents));
+    data = localStorage.getItem("dctSuperEvents");
   }
 
-  let currentEvents = data == null ? events : JSON.parse(data);
+  let currentEvents = JSON.parse(data);
+
+  if (currentEvents.some(event => event.id == undefined)) {
+    currentEvents.forEach(event => event.id == generateId());
+
+    localStorage.setItem('dctSuperEvents', JSON.stringify(currentEvents));
+}
 
   // above is same as 
   // if (data == null) {
@@ -261,4 +275,46 @@ function saveNewEvent() {
       localStorage.setItem('dctSuperEvents', JSON.stringify(events));
 
       buildDropDown();
+}
+
+function generateId() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
+}
+
+function editEvent(eventRow) {
+  let eventID = eventRow.getAttribute("data-event");
+
+  let currentEvents = getEventData();
+
+  let eventToEdit = currentEvents.find(event => event.id == eventID);
+
+  document.getElementById('editEventName').value = eventToEdit.event;
+  document.getElementById('editEventCity').value = eventToEdit.city;
+  document.getElementById('editEventAttendance').value = eventToEdit.attendance;
+  
+let eventDate = new Date(eventToEdit.date);
+let eventDateString = eventDate.toISOString();
+let dateArray = eventDateString.split('T');
+let formattedDate = dateArray[0];
+
+document.getElementById('editEventDate').value = formattedDate
+/*
+  let stateSelect = document.getElementById("newEventState");
+  let stateIndex = stateSelect.selectedIndex;
+  let state = stateSelect.options[stateIndex].text;
+*/
+
+ let editStateSelect = document.getElementById("editEventState")
+ let optionsArray = [...editStateSelect.options]
+ let index = optionsArray.findIndex(
+   (option) => eventToEdit.state == option.text
+ );
+editStateSelect.selectedIndex = index;
+
+  // document.getElementById('editEventName').value = eventToEdit.event;
 }
